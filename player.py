@@ -45,6 +45,7 @@ class Player:
         self.bullets = []
         self.is_shooting = False
         self.hitting = False
+        self.win_prize = False
 
     def walk(self,direction):
             if(self.direction != direction or (self.animation != self.walk_r and self.animation != self.walk_l)):
@@ -158,6 +159,18 @@ class Player:
         for bullet in self.bullets[:]:
             bullet.update()
 
+    def get_prize(self,prize):
+        if self.rect_corrected.colliderect(prize.rect):  # Verificar colisión entre el jugador y el prize
+            return True
+        return False
+    
+    def win(self,lista_prize):
+        if lista_prize:
+            for prize in lista_prize:
+                if self.get_prize(prize):
+                    lista_prize.remove(prize)
+        else:
+            self.win_prize = True
 
 
     def set_x(self, delta_x):
@@ -181,10 +194,11 @@ class Player:
 
 
 
-    def update(self,delta_ms, lista_plataformas,lista_enemigos):
+    def update(self,delta_ms, lista_plataformas,lista_enemigos,lista_prize):
         self.do_movement(delta_ms, lista_plataformas)
         self.do_animation(delta_ms)
         self.hurting_enemy(lista_enemigos)
+        self.win(lista_prize)
         if self.is_shooting:
             self.shoot(True)
         
