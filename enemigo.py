@@ -7,6 +7,7 @@ class Enemigo:
         self.walk_r = Auxiliar.getSurfaceFromSpriteSheet("C:\\Users\\Denise\\Desktop\\MyGame\\Assets\\jellyfish_2.png",5, 2,80,80)[:9]
         self.walk_l = Auxiliar.getSurfaceFromSpriteSheet("C:\\Users\\Denise\\Desktop\\MyGame\\Assets\\jellyfish_2.png",5, 2,80,80, True)[:9]
         self.dead_animation = Auxiliar.getSurfaceFromSpriteSheet(PATH_IMAGE+"jelly_sprite.png",4,1,60,60)
+        self.is_pez = False
         self.direction = DIRECTION_R
         self.speed_movement = speed_movement
         self.health = health
@@ -57,7 +58,7 @@ class Enemigo:
 
 #HOLA
 
-    def update(self, delta_ms):
+    def update(self, delta_ms,player):
         self.movement(delta_ms)
         self.do_animation(delta_ms)
 
@@ -69,7 +70,6 @@ class Enemigo:
                 self.frame += 1
                 if self.frame >= len(self.animation):
                     self.frame = 0
-        self.frame=0
         
     def hurt(self,attack):
         if self.is_alive and self.health > 0:
@@ -88,7 +88,5 @@ class Enemigo:
         if DEBUG:
             #pygame.draw.rect(screen, RED, self.rect)  # Opcional: dibujar el rectángulo del enemigo
             pygame.draw.rect(screen,BLUE,self.rect_collision)
-        #print(self.health)
-        print(self.is_alive)
         self.image = self.animation[self.frame]
         screen.blit(self.image, self.rect)
